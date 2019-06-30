@@ -8,10 +8,9 @@
 #include <QtNetwork/QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QDebug>
-#include <QMessageBox>
 #include <QPushButton>
 #include <QComboBox>
+#include <QMessageBox>
 
 class ItemEditFrame : public QFrame
 {

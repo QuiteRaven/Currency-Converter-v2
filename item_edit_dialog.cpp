@@ -1,18 +1,18 @@
-#include "item_edit_dialog.h"
-
 #include <QLabel>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
+
+#include "item_edit_dialog.h"
 
 ItemEditDialog::ItemEditDialog(QWidget *parent)
     : QDialog(parent)
 {
     setWindowTitle(tr("About"));
 
-    QFrame *Help = new QFrame(this);
-    QHBoxLayout *layout = new QHBoxLayout(Help);
-    QLabel *text = new QLabel(Help);
-    text->setText(tr("GAME OF THE YEAR"));
-    layout->addWidget(text, 0, Qt::AlignBottom);
+    auto *Help = new QWidget(this);
+    auto *layout = new QVBoxLayout(this);
+    auto *text = new QLabel(Help);
+    text->setText(tr("Currency-Converter v2.0"));
+    layout->addWidget(text, 0, Qt::AlignHCenter);
 }
 
 ItemEditDialog::~ItemEditDialog()

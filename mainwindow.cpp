@@ -1,9 +1,9 @@
-#include "MainWindow.h"
-#include "item_edit_dialog.h"
-
 #include <QMenuBar>
 #include <QAction>
 #include <QBoxLayout>
+
+#include "MainWindow.h"
+#include "item_edit_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,8 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 void MainWindow::onNewItem() {
+
     ItemEditDialog aboutDialog(this);
     aboutDialog.exec();
+
 }
 
 MainWindow::~MainWindow()
