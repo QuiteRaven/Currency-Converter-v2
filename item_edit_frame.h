@@ -2,15 +2,11 @@
 #define ITEMEDITFRAME_H
 
 #include <QFrame>
-#include <QDoubleValidator>
 #include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
 #include <QPushButton>
 #include <QComboBox>
-#include <QMessageBox>
+#include <QDateEdit>
 
 class ItemEditFrame : public QFrame
 {
@@ -25,12 +21,13 @@ private:
     void setup_currency_To(QLayout *currency);
     void onResult(QNetworkReply *reply);
     void onConvertButton();
+    void onTextChanged();
 
 private:
     QNetworkAccessManager * _networkManager;
     QPushButton            * _convertButton;
 
-    QLineEdit * _fieldDate;
+    QDateEdit * _fieldDate;
     QLineEdit * _fieldFrom;
     QLineEdit * _fieldTo;
     QComboBox * _dropList_From;

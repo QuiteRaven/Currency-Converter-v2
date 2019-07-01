@@ -13,10 +13,10 @@ public:
   explicit  MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
-  void onNewItem();
+  void onAbout();
 
 private:
-    QAction	         * _actNewItem = nullptr;
-    ItemEditFrame        *_upFrame = nullptr;
+    QAction	         * _aboutAction = nullptr;
+    ItemEditFrame        *_mainFrame = nullptr;
 };
 #endif

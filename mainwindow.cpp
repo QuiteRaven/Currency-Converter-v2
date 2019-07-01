@@ -1,9 +1,9 @@
+#include "MainWindow.h"
+#include "about_dialog.h"
+
 #include <QMenuBar>
 #include <QAction>
 #include <QBoxLayout>
-
-#include "MainWindow.h"
-#include "item_edit_dialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,19 +14,19 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(frame);
     auto *layout = new QVBoxLayout(frame);
 
-    _upFrame = new ItemEditFrame(this);
-    layout->addWidget(_upFrame);
+    _mainFrame = new ItemEditFrame(this);
+    layout->addWidget(_mainFrame);
 
-    _actNewItem = new QAction(this);
-    _actNewItem->setText(tr("About"));
-    connect(_actNewItem, &QAction::triggered, this, &MainWindow::onNewItem);
+    _aboutAction = new QAction(this);
+    _aboutAction->setText(tr("About"));
+    connect(_aboutAction, &QAction::triggered, this, &MainWindow::onAbout);
     QMenu *mItem = menuBar()->addMenu(tr("Help"));
-    mItem->addAction(_actNewItem);
+    mItem->addAction(_aboutAction);
 }
 
-void MainWindow::onNewItem() {
+void MainWindow::onAbout() {
 
-    ItemEditDialog aboutDialog(this);
+    AboutDialog aboutDialog(this);
     aboutDialog.exec();
 
 }

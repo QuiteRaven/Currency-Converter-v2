@@ -1,10 +1,10 @@
+#include "about_dialog.h"
+
 #include <QLabel>
 #include <QVBoxLayout>
 
-#include "item_edit_dialog.h"
-
-ItemEditDialog::ItemEditDialog(QWidget *parent)
-    : QDialog(parent)
+AboutDialog::AboutDialog(QWidget *parent)
+    : QDialog(parent, Qt::WindowCloseButtonHint)
 {
     setWindowTitle(tr("About"));
 
@@ -15,6 +15,6 @@ ItemEditDialog::ItemEditDialog(QWidget *parent)
     layout->addWidget(text, 0, Qt::AlignHCenter);
 }
 
-ItemEditDialog::~ItemEditDialog()
+AboutDialog::~AboutDialog()
 {
 }

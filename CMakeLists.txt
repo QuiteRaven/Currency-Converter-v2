@@ -6,22 +6,25 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui Network)
 
-set(project_headers 
+set(PROJECT_HEADERS 
     mainwindow.h
-    item_edit_dialog.h
+    about_dialog.h
     item_edit_frame.h
-    currency_type.h)
+    currency_Type.h)
 
-set(project_sources 
+set(PROJECT_SOURCES
     main.cpp
     mainwindow.cpp
-    item_edit_dialog.cpp
+    about_dialog.cpp
     item_edit_frame.cpp)
 
-qt5_wrap_cpp(project_sources_moc ${project_headers})
+set(PROJECT_RESOURCES
+    Resources/MainWindow.qrc)
 
-add_executable(${PROJECT_NAME} ${project_headers} ${project_sources} 
-    ${project_sources_moc} ${project_headers_wrapped})
+qt5_wrap_cpp(PROJECT_SOURCES_MOC ${PROJECT_HEADERS})
+
+add_executable(${PROJECT_NAME} ${PROJECT_HEADERS} ${PROJECT_SOURCES} ${PROJECT_RESOURCES}
+    ${PROJECT_SOURCES_MOC} ${PROJECT_HEADERS_WRAPPED})
 
 target_link_libraries(${PROJECT_NAME} 
     PUBLIC 
