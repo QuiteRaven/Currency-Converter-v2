@@ -12,6 +12,8 @@
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QDate>
+#include <QSizePolicy>
+#include <QSpacerItem>
 
 const QString API_KEY = "5e77529f0adfeacd8f2b";
 
@@ -19,53 +21,68 @@ ItemEditFrame::ItemEditFrame(QWidget *parent)
     :QFrame(parent)
 {
     _networkManager = new QNetworkAccessManager(this);
-    connect(_networkManager, &QNetworkAccessManager::finished, this, &ItemEditFrame::onResult);
-    
+    connect(_networkManager, &QNetworkAccessManager::finished, this, &ItemEditFrame::onResult);  
     auto today = QDate::currentDate();
-    auto late = QDate(2018,06,01);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    auto *layout = new QVBoxLayout(this);
+    auto border = today.addYears(-1);
+   
+    auto *mainlayout = new QVBoxLayout(this);
 
-    auto *layout_A = new QHBoxLayout();
-    layout->addLayout(layout_A);
+    auto *layout_Date = new QHBoxLayout();
+    mainlayout->addLayout(layout_Date);
+    layout_Date->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    auto *label_Date = new QLabel(this);
+    label_Date->setText(tr("Date"));
+    layout_Date->addWidget(label_Date);
     _fieldDate = new QDateEdit(this);
     _fieldDate->setDisplayFormat("yyyy-MM-dd");
     _fieldDate->setMaximumDate(today);
-    _fieldDate->setMinimumDate(late);
+    _fieldDate->setMinimumDate(border);
     _fieldDate->setDate(today);
-    layout_A->addWidget(_fieldDate, 0, Qt::AlignHCenter);
+    layout_Date->addWidget(_fieldDate, 0, Qt::AlignHCenter);
+    layout_Date->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
 
-    auto *layout_B = new QHBoxLayout();
-    layout->addLayout(layout_B);
-    auto *lable_B = new QLabel(this);
-    lable_B->setText(tr("From"));
-    layout_B->addWidget(lable_B);
-    setup_currency_From(layout_B);
-    auto *lable_C = new QLabel(this);
-    lable_C->setMargin(0);
-    lable_C->setText(tr("To"));
-    layout_B->addWidget(lable_C);
-    setup_currency_To(layout_B);
-    
-    auto *layout_C = new QHBoxLayout();
-    layout->addLayout(layout_C);
+
+    auto *layout_Cbox = new QHBoxLayout();
+    mainlayout->addLayout(layout_Cbox);
+    auto *label_From = new QLabel(this);
+    label_From->setText(tr("From"));
+    layout_Cbox->addWidget(label_From);
+    setup_currency_From(layout_Cbox);
+    layout_Cbox->addWidget(_dropList_From);
+    layout_Cbox->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    auto *lable_To = new QLabel(this);
+    lable_To->setText(tr("To"));
+    layout_Cbox->addWidget(lable_To);
+    setup_currency_To(layout_Cbox);
+    layout_Cbox->addWidget(_dropList_To);
+
+    auto *layout_fields = new QHBoxLayout();
+    mainlayout->addLayout(layout_fields);
     auto *inputRange = new QDoubleValidator(this);
     inputRange->setBottom(0);
+    auto *label_From2 = new QLabel(this);
+    label_From2->setText(tr("From"));
+    layout_fields->addWidget(label_From2);
     _fieldFrom = new QLineEdit(this);
     _fieldFrom->setMaxLength(20);
     _fieldFrom->setPlaceholderText("Enter value");
     _fieldFrom->setValidator(inputRange);
     connect(_fieldFrom, &QLineEdit::textChanged, this, &ItemEditFrame::onTextChanged);
-    layout_C->addWidget(_fieldFrom);
+    layout_fields->addWidget(_fieldFrom);
+    layout_fields->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
+    auto *label_To2 = new QLabel(this);
+    label_To2->setText(tr("To"));
+    layout_fields->addWidget(label_To2);
     _fieldTo = new QLineEdit(this);
-    _fieldTo->setMaxLength(20);
     _fieldTo->setReadOnly(true);
-    layout_C->addWidget(_fieldTo);
+    _fieldTo->setFrame(false);
+    _fieldTo->setFocusPolicy(Qt::NoFocus);
+    layout_fields->addWidget(_fieldTo);
 
-    auto *layout_D = new QHBoxLayout();
-    layout->addLayout(layout_D);
+    auto *layout_Button = new QHBoxLayout();
+    mainlayout->addLayout(layout_Button);
     _convertButton = new QPushButton(this);
-    layout->addWidget(_convertButton,0,Qt::AlignHCenter);
+    layout_Button->addWidget(_convertButton,0,Qt::AlignHCenter);
     _convertButton->setText(tr("Convert"));
     _convertButton->setEnabled(false);
     connect(_convertButton, &QPushButton::clicked, this,&ItemEditFrame::onConvertButton);
@@ -73,32 +90,26 @@ ItemEditFrame::ItemEditFrame(QWidget *parent)
 
 void ItemEditFrame::setup_currency_From(QLayout *currency)
 {
-    auto *layout = new QHBoxLayout();
-    currency->addItem(layout);
-
-    _dropList_From = new QComboBox(this);
+    _dropList_From = new QComboBox();
     _dropList_From->addItem(tr("USD"), USD);
     _dropList_From->addItem(tr("EUR"), EUR);
     _dropList_From->addItem(tr("GBP"), GBP);
     _dropList_From->addItem(tr("JPY"), JPY);
     _dropList_From->addItem(tr("KZT"), KZT);
     _dropList_From->addItem(tr("RUB"), RUB);
-    layout->addWidget(_dropList_From);
+    _dropList_From->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 void ItemEditFrame::setup_currency_To(QLayout *currency)
 {
-    auto *layout = new QHBoxLayout();
-    currency->addItem(layout);
-
-    _dropList_To = new QComboBox(this);
+    _dropList_To = new QComboBox();
     _dropList_To->addItem(tr("USD"), USD);
     _dropList_To->addItem(tr("EUR"), EUR);
     _dropList_To->addItem(tr("GBP"), GBP);
     _dropList_To->addItem(tr("JPY"), JPY);
     _dropList_To->addItem(tr("KZT"), KZT);
     _dropList_To->addItem(tr("RUB"), RUB);
-    layout->addWidget(_dropList_To);
+    _dropList_To->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
 }
 
 void ItemEditFrame::onConvertButton()

@@ -8,6 +8,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    QMainWindow::setMaximumSize(500, 300);
     setWindowTitle(tr("Currency-Converter"));
 
     auto *frame = new QWidget();
