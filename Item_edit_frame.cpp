@@ -28,15 +28,12 @@ ItemEditFrame::ItemEditFrame(QWidget *parent)
 
     auto *layout_A = new QHBoxLayout();
     layout->addLayout(layout_A);
-    auto *text = new QLabel(this);
-    text->setText(tr("Date"));
-    layout_A->addWidget(text);
     _fieldDate = new QDateEdit(this);
     _fieldDate->setDisplayFormat("yyyy-MM-dd");
     _fieldDate->setMaximumDate(today);
     _fieldDate->setMinimumDate(late);
     _fieldDate->setDate(today);
-    layout_A->addWidget(_fieldDate);
+    layout_A->addWidget(_fieldDate, 0, Qt::AlignHCenter);
 
     auto *layout_B = new QHBoxLayout();
     layout->addLayout(layout_B);
