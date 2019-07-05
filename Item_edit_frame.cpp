@@ -8,18 +8,19 @@
 #include <QSizePolicy>
 #include <QDoubleValidator>
 #include <QtNetwork/QNetworkRequest>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
 #include <QDate>
 #include <QSizePolicy>
 #include <QSpacerItem>
+#include <QJsonDocument>
 
 const QString API_KEY = "5e77529f0adfeacd8f2b";
 
 ItemEditFrame::ItemEditFrame(QWidget *parent)
     :QFrame(parent)
 {
+    file.setFileName("History.txt");
     _networkManager = new QNetworkAccessManager(this);
     connect(_networkManager, &QNetworkAccessManager::finished, this, &ItemEditFrame::onResult);  
     auto today = QDate::currentDate();
@@ -134,6 +135,11 @@ void ItemEditFrame::onResult(QNetworkReply *reply)
         double amount = _fieldFrom->text().toDouble();
         double result = amount * rate;
         _fieldTo->setText(QString::number(result,0,3)); 
+
+        file.open(QIODevice::Append | QFile::Text);
+        QTextStream writeStream(&file);
+        writeStream << _fieldDate->text() << ":" << _fieldFrom->text()<< from << "=" << result << to << "\n";
+        file.close();
     }
     else
         QMessageBox::warning(this, "Error", "Connection lost).");

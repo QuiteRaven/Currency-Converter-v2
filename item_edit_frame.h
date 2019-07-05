@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QComboBox>
 #include <QDateEdit>
+#include <QFile>
+
 
 class ItemEditFrame : public QFrame
 {
@@ -32,7 +34,8 @@ private:
     QLineEdit * _fieldTo;
     QComboBox * _dropList_From;
     QComboBox * _dropList_To;
-
+    QFile file;
+    
     QString from;
     QString to;
     QString date;

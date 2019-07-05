@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     auto *kianuPicture = new QSplashScreen;
-    kianuPicture->setPixmap(QPixmap(":/2.png"));
+    kianuPicture->setPixmap(QPixmap("://picture/Resources/2.png"));
     kianuPicture->show();
     MainWindow window;
     QTimer::singleShot(3000, nullptr, [&window,kianuPicture]()
