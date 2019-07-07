@@ -8,7 +8,7 @@
 #include <QComboBox>
 #include <QDateEdit>
 #include <QFile>
-
+#include <QJsonDocument>
 
 class ItemEditFrame : public QFrame
 {
@@ -24,18 +24,20 @@ private:
     void onResult(QNetworkReply *reply);
     void onConvertButton();
     void onTextChanged();
+    void toWriteinFile();
 
 private:
     QNetworkAccessManager * _networkManager;
     QPushButton            * _convertButton;
-
+    
     QDateEdit * _fieldDate;
     QLineEdit * _fieldFrom;
     QLineEdit * _fieldTo;
     QComboBox * _dropList_From;
     QComboBox * _dropList_To;
+   
+    QJsonDocument doc;
     QFile file;
-    
     QString from;
     QString to;
     QString date;

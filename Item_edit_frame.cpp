@@ -13,14 +13,14 @@
 #include <QDate>
 #include <QSizePolicy>
 #include <QSpacerItem>
-#include <QJsonDocument>
+#include <QJsonArray>
+
 
 const QString API_KEY = "5e77529f0adfeacd8f2b";
 
 ItemEditFrame::ItemEditFrame(QWidget *parent)
     :QFrame(parent)
 {
-    file.setFileName("History.txt");
     _networkManager = new QNetworkAccessManager(this);
     connect(_networkManager, &QNetworkAccessManager::finished, this, &ItemEditFrame::onResult);  
     auto today = QDate::currentDate();
@@ -41,7 +41,6 @@ ItemEditFrame::ItemEditFrame(QWidget *parent)
     _fieldDate->setDate(today);
     layout_Date->addWidget(_fieldDate, 0, Qt::AlignHCenter);
     layout_Date->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Fixed));
-
 
     auto *layout_Cbox = new QHBoxLayout();
     mainlayout->addLayout(layout_Cbox);
@@ -115,13 +114,13 @@ void ItemEditFrame::setup_currency_To(QLayout *currency)
 
 void ItemEditFrame::onConvertButton()
 {
-        from = _dropList_From->currentText();
-        to = _dropList_To->currentText();
-        date = _fieldDate->text();
-        QUrl url;
-        url = QString("http://free.currconv.com/api/v7/convert?q=%3_%4&compact=ultra&date=%1&apiKey=%2")
-            .arg(date).arg(API_KEY).arg(from).arg(to);
-        _networkManager->get(QNetworkRequest(url));
+    from = _dropList_From->currentText();
+    to = _dropList_To->currentText();
+    date = _fieldDate->text();
+    QUrl url;
+    url = QString("http://free.currconv.com/api/v7/convert?q=%3_%4&compact=ultra&date=%1&apiKey=%2")
+          .arg(date).arg(API_KEY).arg(from).arg(to);
+    _networkManager->get(QNetworkRequest(url));
 }
 
 void ItemEditFrame::onResult(QNetworkReply *reply)
@@ -136,13 +135,10 @@ void ItemEditFrame::onResult(QNetworkReply *reply)
         double result = amount * rate;
         _fieldTo->setText(QString::number(result,0,3)); 
 
-        file.open(QIODevice::Append | QFile::Text);
-        QTextStream writeStream(&file);
-        writeStream << _fieldDate->text() << ":" << _fieldFrom->text()<< from << "=" << result << to << "\n";
-        file.close();
+        toWriteinFile();
     }
     else
-        QMessageBox::warning(this, "Error", "Connection lost).");
+        QMessageBox::warning(this, "Error", "Connection lost.");
 }
 
 void ItemEditFrame::onTextChanged()
@@ -155,6 +151,33 @@ void ItemEditFrame::onTextChanged()
         _convertButton->setEnabled(false);
 }
 
+void ItemEditFrame::toWriteinFile()
+{
+    file.setFileName("History.json");
+    file.open(QIODevice::ReadOnly | QFile::Text);
+    doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+
+    if (file.open(QIODevice::WriteOnly | QFile::Text))
+    {
+        QVariantMap map;
+        map.insert("Date", _fieldDate->text());
+        map.insert("From-To", from + "-" + to);
+        map.insert("Result", _fieldFrom->text() + "=" + _fieldTo->text());
+        auto object = QJsonObject::fromVariantMap(map);
+        QJsonArray toWrite = doc.object().value("Currency").toArray();
+        toWrite.append(object);
+        doc.setArray(toWrite);
+        file.write("{\"Currency\":" + doc.toJson() + "}");
+        file.close();
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "File don't open.");
+    }
+}
+
 ItemEditFrame::~ItemEditFrame()
 {
+
 }
