@@ -9,7 +9,7 @@
 #include <QDateEdit>
 #include <QFile>
 #include <QJsonDocument>
-
+#include <QHBoxLayout>
 class ItemEditFrame : public QFrame
 {
     Q_OBJECT
@@ -19,12 +19,16 @@ public:
     ~ItemEditFrame();
 
 private:
-    void setup_currency_From(QLayout *currency);
-    void setup_currency_To(QLayout *currency);
+    void setupcurrencyFrom(QLayout *currency);
+    void setupcurrencyTo(QLayout *currency);
     void onResult(QNetworkReply *reply);
     void onConvertButton();
     void onTextChanged();
     void toWriteinFile();
+    void createDateEdit();
+    void createCboxEdit();
+    void createFieldsEdit();
+    void createButtonEdit();
 
 private:
     QNetworkAccessManager * _networkManager;
@@ -33,8 +37,12 @@ private:
     QDateEdit * _fieldDate;
     QLineEdit * _fieldFrom;
     QLineEdit * _fieldTo;
-    QComboBox * _dropList_From;
-    QComboBox * _dropList_To;
+    QComboBox * _dropListFrom;
+    QComboBox * _dropListTo;
+    QHBoxLayout * _layoutDate;
+    QHBoxLayout * _layoutCbox;
+    QHBoxLayout * _layoutFields;
+    QHBoxLayout * _layoutButton;
    
     QJsonDocument doc;
     QFile file;

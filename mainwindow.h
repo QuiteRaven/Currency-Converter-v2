@@ -10,13 +10,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-  explicit  MainWindow(QWidget *parent = nullptr);
-  ~MainWindow();
+    explicit  MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
 
-  void onAbout();
+    void onAbout();
 
 private:
     QAction	         * _aboutAction = nullptr;
-    ItemEditFrame        *_mainFrame = nullptr;
+    ItemEditFrame       *_mainFrame = nullptr;
 };
 #endif

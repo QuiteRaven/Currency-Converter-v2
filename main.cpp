@@ -7,14 +7,14 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    auto *kianuPicture = new QSplashScreen;
-    kianuPicture->setPixmap(QPixmap("://picture/Resources/2.png"));
-    kianuPicture->show();
+    auto *Picture = new QSplashScreen;
+    Picture->setPixmap(QPixmap(":/2.png"));
+    Picture->show();
     MainWindow window;
-    QTimer::singleShot(3000, nullptr, [&window,kianuPicture]()
+    QTimer::singleShot(3000, nullptr, [&window,Picture]()
     {
-        kianuPicture->close();
-        delete kianuPicture;
+        Picture->close();
+        delete Picture;
         window.show();
     });
     return app.exec();

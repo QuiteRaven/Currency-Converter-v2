@@ -11,9 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
     QMainWindow::setMaximumSize(500, 300);
     setWindowTitle(tr("Currency-Converter"));
 
-    auto *frame = new QWidget();
-    setCentralWidget(frame);
-    auto *layout = new QVBoxLayout(frame);
+    auto centralWidget = new QWidget();
+    setCentralWidget(centralWidget);
+    auto layout = new QVBoxLayout(centralWidget);
 
     _mainFrame = new ItemEditFrame(this);
     layout->addWidget(_mainFrame);
@@ -25,11 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
     mItem->addAction(_aboutAction);
 }
 
-void MainWindow::onAbout() {
-
+void MainWindow::onAbout()
+{
     AboutDialog aboutDialog(this);
     aboutDialog.exec();
-
 }
 
 MainWindow::~MainWindow()
